@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Neon Puzzle Escape - Game Puzzle Arcade</title>
+    <title>Cyber Number Puzzle - GitHub Pages Game</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
             -webkit-user-select: none;
         }
         body {
-            background-color: #0d0f18;
+            background-color: #0b0f19;
             color: #e2e8f0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
@@ -33,67 +33,63 @@
             font-size: 1.8rem;
             font-weight: 900;
             letter-spacing: 1.5px;
-            background: linear-gradient(45deg, #a855f7, #06b6d4);
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            text-shadow: 0 0 18px rgba(168, 85, 247, 0.4);
+            text-shadow: 0 0 18px rgba(0, 242, 254, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
         }
         .logo-icon {
-            width: 30px;
-            height: 30px;
-            border: 3px solid #a855f7;
-            border-radius: 6px;
-            position: relative;
-            box-shadow: 0 0 12px #a855f7;
-            background: rgba(168, 85, 247, 0.2);
+            width: 32px;
+            height: 32px;
+            border: 2px solid #00f2fe;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            padding: 3px;
+            box-shadow: 0 0 10px #00f2fe;
+            background: rgba(0, 242, 254, 0.1);
         }
-        .logo-icon::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 10px;
-            height: 10px;
-            background: #06b6d4;
-            transform: translate(-50%, -50%) rotate(45deg);
-            box-shadow: 0 0 8px #06b6d4;
+        .logo-box {
+            background: #00f2fe;
+            border-radius: 2px;
         }
 
         /* Panel Informasi Game */
         .info-panel {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 10px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 8px 18px;
+            padding: 8px 16px;
             border-radius: 20px;
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            border: 1px solid rgba(0, 242, 254, 0.3);
             align-items: center;
         }
         .info-box {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
         }
         .info-box span {
-            color: #06b6d4;
+            color: #00f2fe;
         }
 
         /* Container Canvas Game */
         #game-container {
             position: relative;
             border-radius: 16px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 242, 254, 0.2);
             overflow: hidden;
-            border: 2px solid rgba(168, 85, 247, 0.4);
+            border: 2px solid rgba(0, 242, 254, 0.4);
         }
         canvas {
             display: block;
-            background: #131722;
+            background: #111827;
         }
 
         /* Panel Kontrol & Petunjuk */
@@ -114,45 +110,45 @@
             line-height: 1.35;
         }
         .how-to-play b {
-            color: #a855f7;
+            color: #00f2fe;
         }
 
         /* Virtual Joystick Analog 360 */
         #joystick-container {
-            width: 90px;
-            height: 90px;
+            width: 85px;
+            height: 85px;
             background: rgba(255, 255, 255, 0.06);
-            border: 2px solid rgba(168, 85, 247, 0.4);
+            border: 2px solid rgba(0, 242, 254, 0.4);
             border-radius: 50%;
             position: relative;
             touch-action: none;
         }
         #joystick-knob {
-            width: 36px;
-            height: 36px;
-            background: radial-gradient(circle, #a855f7, #06b6d4);
+            width: 34px;
+            height: 34px;
+            background: radial-gradient(circle, #00f2fe, #4facfe);
             border-radius: 50%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 12px #a855f7;
+            box-shadow: 0 0 12px #00f2fe;
             pointer-events: none;
         }
 
         /* Tombol Suara */
         .btn-audio {
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(168, 85, 247, 0.4);
+            border: 1px solid rgba(0, 242, 254, 0.4);
             color: #fff;
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             transition: 0.2s;
         }
         .btn-audio:hover {
-            background: rgba(168, 85, 247, 0.2);
+            background: rgba(0, 242, 254, 0.2);
         }
 
         /* Overlay Game Over / Win */
@@ -162,7 +158,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(13, 15, 24, 0.92);
+            background: rgba(11, 15, 25, 0.92);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -179,8 +175,8 @@
         #overlay h2 {
             font-size: 1.8rem;
             margin-bottom: 8px;
-            color: #ff3366;
-            text-shadow: 0 0 12px #ff3366;
+            color: #00f2fe;
+            text-shadow: 0 0 12px #00f2fe;
         }
         #overlay p {
             margin-bottom: 20px;
@@ -193,12 +189,12 @@
             padding: 10px 26px;
             font-size: 1rem;
             font-weight: bold;
-            color: #0d0f18;
-            background: #a855f7;
+            color: #0b0f19;
+            background: #00f2fe;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 0 15px #a855f7;
+            box-shadow: 0 0 15px #00f2fe;
             transition: transform 0.2s;
         }
         #overlay button:hover {
@@ -211,25 +207,30 @@
     <!-- Header & Logo Game -->
     <div class="header">
         <div class="logo">
-            <div class="logo-icon"></div>
-            Neon Puzzle
+            <div class="logo-icon">
+                <div class="logo-box"></div>
+                <div class="logo-box"></div>
+                <div class="logo-box"></div>
+            </div>
+            NumPuzzle
         </div>
     </div>
 
-    <!-- Info Panel (Level, Skor, Tombol Musik) -->
+    <!-- Info Panel (Level, Skor, Langkah, Tombol Audio) -->
     <div class="info-panel">
         <div class="info-box">Level: <span id="level-txt">1</span></div>
         <div class="info-box">Skor: <span id="score-txt">0</span></div>
+        <div class="info-box">Move: <span id="move-txt">0</span></div>
         <button class="btn-audio" id="audio-btn" onclick="toggleAudio()">🔊 Musik: ON</button>
     </div>
 
     <!-- Area Main Canvas -->
     <div id="game-container">
-        <canvas id="canvas" width="400" height="400"></canvas>
+        <canvas id="canvas" width="380" height="380"></canvas>
         <div id="overlay">
-            <h2 id="overlay-title">GAGAL!</h2>
-            <p id="overlay-desc">Kamu terkena rintangan laser!</p>
-            <button onclick="restartGame()">Coba Lagi</button>
+            <h2 id="overlay-title">PUZZLE SELESAI!</h2>
+            <p id="overlay-desc">Selamat! Angka berhasil disusun rapi.</p>
+            <button onclick="nextLevel()">Lanjut Level</button>
         </div>
     </div>
 
@@ -237,9 +238,10 @@
     <div class="controls-area">
         <div class="how-to-play">
             <b>Cara Bermain:</b><br>
+            • Klik/Sentuh ubin angka untuk menggesernya ke kotak kosong.<br>
             • Desktop: <b>Panah Keyboard / WASD</b>.<br>
-            • Mobile: Putar <b>Joystick Analog</b>.<br>
-            • Ambil <b>Kunci (Kuning)</b> untuk membuka <b>Pintu (Cyan)</b> lalu menuju <b>Portal Keluar</b>. Hindari <b>Laser Merah</b>!
+            • Mobile: Geser <b>Joystick Analog</b>.<br>
+            • Susun angka <b>berurutan (1, 2, 3...)</b>. Hati-hati dengan <b>Ubin Terkunci (Merah)</b>!
         </div>
         <div id="joystick-container">
             <div id="joystick-knob"></div>
@@ -253,6 +255,7 @@
         // UI Elemen
         const levelTxt = document.getElementById('level-txt');
         const scoreTxt = document.getElementById('score-txt');
+        const moveTxt = document.getElementById('move-txt');
         const overlay = document.getElementById('overlay');
         const overlayTitle = document.getElementById('overlay-title');
         const overlayDesc = document.getElementById('overlay-desc');
@@ -277,7 +280,7 @@
                 const gain = audioCtx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -287,14 +290,14 @@
         }
 
         function startBGM() {
-            const notes = [220.00, 261.63, 293.66, 329.63, 392.00]; // Melodi Puzzle Ambient
+            const notes = [261.63, 329.63, 392.00, 523.25]; // Melodi Pentatonik Arpeggio
             let step = 0;
             bgmInterval = setInterval(() => {
                 if (!isAudioMuted && audioCtx) {
-                    playSound(notes[step % notes.length], 'triangle', 0.25);
+                    playSound(notes[step % notes.length], 'sine', 0.2);
                     step++;
                 }
-            }, 450);
+            }, 500);
         }
 
         function toggleAudio() {
@@ -303,271 +306,229 @@
             audioBtn.innerText = isAudioMuted ? "🔇 Musik: OFF" : "🔊 Musik: ON";
         }
 
-        // State Game
+        // Variable Game State
         let level = 1;
         let score = 0;
-        let isGameOver = false;
+        let moves = 0;
+        let gridSize = 3; // Level 1 (3x3), Level tinggi bertambah
+        let board = [];
+        let emptyPos = { r: 0, c: 0 };
+        let isSolved = false;
 
-        // Pemain (Player)
-        let player = { x: 30, y: 30, radius: 10, speed: 2.2, vx: 0, vy: 0, hasKey: false };
+        function initBoard() {
+            gridSize = level >= 3 ? 4 : 3; // Ukuran papan membesar di Level 3
+            moves = 0;
+            moveTxt.innerText = moves;
+            isSolved = false;
+            overlay.classList.remove('active');
 
-        // Elemen Puzzle
-        let key = { x: 0, y: 0, radius: 8, collected: false };
-        let door = { x: 0, y: 0, w: 20, h: 60, open: false };
-        let exit = { x: 0, y: 0, radius: 14 };
+            let totalTiles = gridSize * gridSize;
+            let numbers = Array.from({ length: totalTiles - 1 }, (_, i) => i + 1);
+            numbers.push(0); // 0 melambangkan ubin kosong
 
-        // Dinding Labirin & Rintangan Laser
-        let walls = [];
-        let lasers = [];
+            // Pengacakan Ubin yang Dijamin Mampu Diselesaikan (Solvable)
+            do {
+                numbers.sort(() => Math.random() - 0.5);
+            } while (!isSolvable(numbers, gridSize));
 
-        function generatePuzzle() {
-            player.x = 30;
-            player.y = 30;
-            player.vx = 0;
-            player.vy = 0;
-            player.hasKey = false;
-            key.collected = false;
-            door.open = false;
+            // Masukkan ke Matrix
+            board = [];
+            for (let r = 0; r < gridSize; r++) {
+                let row = [];
+                for (let c = 0; c < gridSize; c++) {
+                    let val = numbers[r * gridSize + c];
+                    let isLocked = false;
 
-            walls = [
-                // Dinding Luar Arena
-                { x: 0, y: 0, w: canvas.width, h: 10 },
-                { x: 0, y: canvas.height - 10, w: canvas.width, h: 10 },
-                { x: 0, y: 0, w: 10, h: canvas.height },
-                { x: canvas.width - 10, y: 0, w: 10, h: canvas.height },
-                
-                // Dinding Dalam Labirin (Variatif)
-                { x: 100, y: 10, w: 15, h: 220 },
-                { x: 220, y: 140, w: 15, h: 250 },
-                { x: 100, y: 300, w: 120, h: 15 }
-            ];
+                    // Rintangan: Di level > 1, ada ubin merah yang tidak bisa dipindahkan awal-awal
+                    if (level > 1 && val === 1) {
+                        isLocked = true;
+                    }
 
-            // Posisi Pintu Kunci (Menghalangi Akses ke Exit)
-            door.x = 220;
-            door.y = 80;
-            door.w = 15;
-            door.h = 60;
+                    if (val === 0) {
+                        emptyPos = { r, c };
+                    }
 
-            // Posisi Kunci & Exit
-            key.x = 50;
-            key.y = 350;
-            exit.x = 350;
-            exit.y = 50;
-
-            // Rintangan Laser Berputar / Bergerak
-            lasers = [];
-            let laserCount = Math.min(level, 5);
-            for (let i = 0; i < laserCount; i++) {
-                lasers.push({
-                    x: 160,
-                    y: 80 + i * 80,
-                    length: 45 + i * 10,
-                    angle: 0,
-                    speed: (0.02 + i * 0.008) * (i % 2 === 0 ? 1 : -1)
-                });
-            }
-        }
-
-        // Cek Kolisi Lingkaran dengan Kotak (Dinding/Pintu)
-        function checkWallCollision(pX, pY, r, w) {
-            let closeX = Math.max(w.x, Math.min(pX, w.x + w.w));
-            let closeY = Math.max(w.y, Math.min(pY, w.y + w.h));
-            let dX = pX - closeX;
-            let dY = pY - closeY;
-            return (dX * dX + dY * dY) < (r * r);
-        }
-
-        // Update Logika Game
-        function update() {
-            if (isGameOver) return;
-
-            // Hitung Pergerakan Baru
-            let nextX = player.x + player.vx;
-            let nextY = player.y + player.vy;
-
-            // Cek Kolisi Dinding Labirin
-            let collideX = false;
-            let collideY = false;
-
-            walls.forEach(w => {
-                if (checkWallCollision(nextX, player.y, player.radius, w)) collideX = true;
-                if (checkWallCollision(player.x, nextY, player.radius, w)) collideY = true;
-            });
-
-            // Cek Kolisi Pintu Kunci
-            if (!door.open) {
-                if (checkWallCollision(nextX, player.y, player.radius, door)) collideX = true;
-                if (checkWallCollision(player.x, nextY, player.radius, door)) collideY = true;
-            }
-
-            if (!collideX) player.x = nextX;
-            if (!collideY) player.y = nextY;
-
-            // Ambil Kunci
-            if (!key.collected && Math.hypot(player.x - key.x, player.y - key.y) < player.radius + key.radius) {
-                key.collected = true;
-                player.hasKey = true;
-                door.open = true; // Pintu Terbuka
-                score += 50;
-                scoreTxt.innerText = score;
-                playSound(600, 'sine', 0.2);
-            }
-
-            // Update & Cek Rintangan Laser
-            lasers.forEach(l => {
-                l.angle += l.speed;
-                let lx2 = l.x + Math.cos(l.angle) * l.length;
-                let ly2 = l.y + Math.sin(l.angle) * l.length;
-
-                // Deteksi jarak pemain ke garis laser
-                let A = player.x - l.x;
-                let B = player.y - l.y;
-                let C = lx2 - l.x;
-                let D = ly2 - l.y;
-                let dot = A * C + B * D;
-                let len_sq = C * C + D * D;
-                let param = len_sq !== 0 ? dot / len_sq : -1;
-
-                let xx, yy;
-                if (param < 0) { xx = l.x; yy = l.y; }
-                else if (param > 1) { xx = lx2; yy = ly2; }
-                else { xx = l.x + param * C; yy = l.y + param * D; }
-
-                if (Math.hypot(player.x - xx, player.y - yy) < player.radius) {
-                    playSound(120, 'sawtooth', 0.4);
-                    endGame(false, "Kamu terkena rintangan laser!");
+                    row.push({ val: val, isLocked: isLocked });
                 }
-            });
-
-            // Cek Mencapai Portal Exit (Menang Level)
-            if (Math.hypot(player.x - exit.x, player.y - exit.y) < player.radius + exit.radius) {
-                level++;
-                score += 100;
-                levelTxt.innerText = level;
-                scoreTxt.innerText = score;
-                playSound(800, 'triangle', 0.3);
-                generatePuzzle();
+                board.push(row);
             }
         }
 
-        // Render Visual Canvas
+        // Memastikan Puzzle Dapat Diselesaikan (Solvable Check Algorithm)
+        function isSolvable(arr, size) {
+            let inversions = 0;
+            for (let i = 0; i < arr.length - 1; i++) {
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[i] && arr[j] && arr[i] > arr[j]) {
+                        inversions++;
+                    }
+                }
+            }
+            if (size % 2 !== 0) {
+                return inversions % 2 === 0;
+            } else {
+                let emptyRowFromBottom = size - Math.floor(arr.indexOf(0) / size);
+                return (emptyRowFromBottom % 2 === 0) ? (inversions % 2 !== 0) : (inversions % 2 === 0);
+            }
+        }
+
+        function moveTile(r, c) {
+            if (isSolved) return;
+
+            // Cek apakah ubin bersebelahan dengan ubin kosong
+            let dr = Math.abs(r - emptyPos.r);
+            let dc = Math.abs(c - emptyPos.c);
+
+            if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+                if (board[r][c].isLocked) {
+                    playSound(150, 'sawtooth', 0.2); // Efek Suara Terkunci
+                    return;
+                }
+
+                // Tukar Ubin
+                board[emptyPos.r][emptyPos.c].val = board[r][c].val;
+                board[emptyPos.r][emptyPos.c].isLocked = board[r][c].isLocked;
+
+                board[r][c].val = 0;
+                board[r][c].isLocked = false;
+
+                emptyPos = { r, c };
+                moves++;
+                moveTxt.innerText = moves;
+                playSound(440, 'sine', 0.1);
+
+                checkWin();
+            }
+        }
+
+        function moveByDirection(dir) {
+            let r = emptyPos.r;
+            let c = emptyPos.c;
+
+            if (dir === 'UP' && r < gridSize - 1) moveTile(r + 1, c);
+            if (dir === 'DOWN' && r > 0) moveTile(r - 1, c);
+            if (dir === 'LEFT' && c < gridSize - 1) moveTile(r, c + 1);
+            if (dir === 'RIGHT' && c > 0) moveTile(r, c - 1);
+        }
+
+        function checkWin() {
+            let count = 1;
+            let win = true;
+
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    if (r === gridSize - 1 && c === gridSize - 1) {
+                        if (board[r][c].val !== 0) win = false;
+                    } else {
+                        if (board[r][c].val !== count) win = false;
+                        count++;
+                    }
+                }
+            }
+
+            if (win) {
+                isSolved = true;
+                score += Math.max(200 - moves * 5, 50) + level * 50;
+                scoreTxt.innerText = score;
+                playSound(880, 'triangle', 0.4);
+
+                overlay.classList.add('active');
+                overlayTitle.innerText = "LEVEL SELESAI!";
+                overlayDesc.innerText = `Kamu menyusun angka dalam ${moves} langkah!`;
+            }
+        }
+
+        function nextLevel() {
+            level++;
+            levelTxt.innerText = level;
+            initBoard();
+        }
+
+        // Render Grafik Canvas
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Latar Belakang Grid Cyber
-            ctx.strokeStyle = "rgba(168, 85, 247, 0.05)";
-            ctx.lineWidth = 1;
-            for (let x = 0; x < canvas.width; x += 20) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            let padding = 10;
+            let tileSize = (canvas.width - padding * (gridSize + 1)) / gridSize;
+
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    let tile = board[r][c];
+                    let x = padding + c * (tileSize + padding);
+                    let y = padding + r * (tileSize + padding);
+
+                    if (tile.val !== 0) {
+                        // Background Ubin
+                        if (tile.isLocked) {
+                            ctx.fillStyle = '#ff0055'; // Merah Rintangan
+                            ctx.shadowColor = '#ff0055';
+                        } else {
+                            ctx.fillStyle = '#1e293b'; // Cyan Cyber
+                            ctx.shadowColor = '#00f2fe';
+                        }
+                        ctx.shadowBlur = 8;
+
+                        // Menggambar Ubin Bulat (Rounded Rect)
+                        ctx.beginPath();
+                        ctx.roundRect(x, y, tileSize, tileSize, 12);
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+
+                        // Border Ubin
+                        ctx.strokeStyle = tile.isLocked ? '#ff3366' : '#00f2fe';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+
+                        // Teks Angka
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = `bold ${tileSize * 0.4}px Segoe UI`;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(tile.val, x + tileSize / 2, y + tileSize / 2);
+                    }
+                }
             }
-            for (let y = 0; y < canvas.height; y += 20) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-            }
-
-            // Gambar Dinding Labirin
-            ctx.fillStyle = '#1e1b4b';
-            ctx.strokeStyle = '#a855f7';
-            ctx.lineWidth = 2;
-            walls.forEach(w => {
-                ctx.fillRect(w.x, w.y, w.w, w.h);
-                ctx.strokeRect(w.x, w.y, w.w, w.h);
-            });
-
-            // Gambar Pintu
-            if (!door.open) {
-                ctx.fillStyle = '#0284c7';
-                ctx.strokeStyle = '#06b6d4';
-                ctx.shadowColor = '#06b6d4';
-                ctx.shadowBlur = 10;
-                ctx.fillRect(door.x, door.y, door.w, door.h);
-                ctx.strokeRect(door.x, door.y, door.w, door.h);
-                ctx.shadowBlur = 0;
-            }
-
-            // Gambar Kunci (Kuning Glowing)
-            if (!key.collected) {
-                ctx.fillStyle = '#eab308';
-                ctx.shadowColor = '#eab308';
-                ctx.shadowBlur = 12;
-                ctx.beginPath();
-                ctx.arc(key.x, key.y, key.radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 0;
-            }
-
-            // Gambar Portal Exit (Hijau Glowing)
-            ctx.fillStyle = '#10b981';
-            ctx.shadowColor = '#10b981';
-            ctx.shadowBlur = 15;
-            ctx.beginPath();
-            ctx.arc(exit.x, exit.y, exit.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-
-            // Gambar Rintangan Laser
-            lasers.forEach(l => {
-                let lx2 = l.x + Math.cos(l.angle) * l.length;
-                let ly2 = l.y + Math.sin(l.angle) * l.length;
-
-                ctx.strokeStyle = '#ff0055';
-                ctx.shadowColor = '#ff0055';
-                ctx.shadowBlur = 10;
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.moveTo(l.x, l.y);
-                ctx.lineTo(lx2, ly2);
-                ctx.stroke();
-                ctx.shadowBlur = 0;
-            });
-
-            // Gambar Pemain (Ungu Glowing)
-            ctx.fillStyle = '#a855f7';
-            ctx.shadowColor = '#a855f7';
-            ctx.shadowBlur = 12;
-            ctx.beginPath();
-            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
         }
 
-        function endGame(isWin, message) {
-            isGameOver = true;
-            overlay.classList.add('active');
-            overlayTitle.innerText = "GAME OVER";
-            overlayDesc.innerText = `${message} Total Skor: ${score}`;
-        }
+        // Input Klik / Touch Canvas
+        canvas.addEventListener('click', (e) => {
+            initAudio();
+            let rect = canvas.getBoundingClientRect();
+            let clickX = e.clientX - rect.left;
+            let clickY = e.clientY - rect.top;
 
-        function restartGame() {
-            level = 1;
-            score = 0;
-            scoreTxt.innerText = score;
-            levelTxt.innerText = level;
-            isGameOver = false;
-            overlay.classList.remove('active');
-            generatePuzzle();
-        }
+            let padding = 10;
+            let tileSize = (canvas.width - padding * (gridSize + 1)) / gridSize;
+
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    let x = padding + c * (tileSize + padding);
+                    let y = padding + r * (tileSize + padding);
+
+                    if (clickX >= x && clickX <= x + tileSize && clickY >= y && clickY <= y + tileSize) {
+                        moveTile(r, c);
+                    }
+                }
+            }
+        });
 
         // Kontrol Keyboard (Desktop)
         window.addEventListener('keydown', (e) => {
             initAudio();
             switch (e.key) {
-                case 'ArrowUp': case 'w': case 'W': player.vy = -player.speed; break;
-                case 'ArrowDown': case 's': case 'S': player.vy = player.speed; break;
-                case 'ArrowLeft': case 'a': case 'A': player.vx = -player.speed; break;
-                case 'ArrowRight': case 'd': case 'D': player.vx = player.speed; break;
+                case 'ArrowUp': case 'w': case 'W': moveByDirection('UP'); break;
+                case 'ArrowDown': case 's': case 'S': moveByDirection('DOWN'); break;
+                case 'ArrowLeft': case 'a': case 'A': moveByDirection('LEFT'); break;
+                case 'ArrowRight': case 'd': case 'D': moveByDirection('RIGHT'); break;
             }
         });
 
-        window.addEventListener('keyup', (e) => {
-            if (['ArrowUp', 'w', 'W', 'ArrowDown', 's', 'S'].includes(e.key)) player.vy = 0;
-            if (['ArrowLeft', 'a', 'A', 'ArrowRight', 'd', 'D'].includes(e.key)) player.vx = 0;
-        });
-
-        // Kontrol Virtual Joystick Analog 360° (Mobile / Touch)
+        // Virtual Joystick Analog 360° (Mobile)
         const joystick = document.getElementById('joystick-container');
         const knob = document.getElementById('joystick-knob');
         let joyActive = false;
         let startX, startY;
+        let canMoveJoy = true;
 
         joystick.addEventListener('pointerdown', (e) => {
             initAudio();
@@ -580,35 +541,39 @@
             if (!joyActive) return;
             let dx = e.clientX - startX;
             let dy = e.clientY - startY;
-            let dist = Math.min(Math.hypot(dx, dy), 30);
+            let dist = Math.min(Math.hypot(dx, dy), 28);
             let angle = Math.atan2(dy, dx);
 
             knob.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
 
-            if (dist > 5) {
-                player.vx = Math.cos(angle) * player.speed;
-                player.vy = Math.sin(angle) * player.speed;
+            if (dist > 15 && canMoveJoy) {
+                canMoveJoy = false;
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    moveByDirection(dx > 0 ? 'RIGHT' : 'LEFT');
+                } else {
+                    moveByDirection(dy > 0 ? 'DOWN' : 'UP');
+                }
             }
         });
 
         window.addEventListener('pointerup', () => {
             if (!joyActive) return;
             joyActive = false;
+            canMoveJoy = true;
             knob.style.transform = `translate(-50%, -50%)`;
-            player.vx = 0;
-            player.vy = 0;
         });
 
         // Game Loop Utama
         function gameLoop() {
-            update();
             draw();
             requestAnimationFrame(gameLoop);
         }
 
         // Inisialisasi Pertama
-        generatePuzzle();
+        initBoard();
         gameLoop();
     </script>
 </body>
-</html>
+    </html>
+
+                                        
