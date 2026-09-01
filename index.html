@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Image Puzzle: Cybernetic Dragon Edition</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        /* Header & 4 Logo JPG */
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #00f2fe, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        /* Tingkat Kesulitan - FITUR BARU */
+        .difficulty-panel {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+        .diff-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            color: #ccc;
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .diff-btn.active {
+            border-color: #a855f7;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background: rgba(0, 242, 254, 0.2);
+            border-color: #00f2fe;
+        }
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Info Status */
+        .info-panel {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .info-panel span {
+            color: #00f2fe;
+        }
+
+        /* Area Canvas Game */
+        #game-container {
+            position: relative;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 242, 254, 0.2);
+            overflow: hidden;
+            border: 2px solid rgba(0, 242, 254, 0.4);
+        }
+        canvas {
+            display: block;
+            background: #111827;
+            cursor: pointer;
+        }
+
+        /* Modal Preview Gambar */
+        #preview-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        #preview-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #preview-img {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 8px;
+            border: 2px solid #00f2fe;
+            box-shadow: 0 0 15px #00f2fe;
+        }
+
+        /* Overlay Win */
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.92);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #overlay h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #00f2fe;
+            text-shadow: 0 0 12px #00f2fe;
+        }
+        #overlay p {
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Logo -->
+    <div class="header">
+        <div class="logo-container">
+            <img src="file1.jpg" alt="Logo 1" class="logo-img">
+            <img src="file2.jpg" alt="Logo 2" class="logo-img">
+            <img src="file3.jpg" alt="Logo 3" class="logo-img">
+            <img src="file4.jpg" alt="Logo 4" class="logo-img">
+        </div>
+        <h1 class="title">Image Puzzle</h1>
+        <p style="font-size: 0.7rem; color: #aaa;">SAtukan Kembali yang Terpecah!</p>
+    </div>
+
+    <!-- Panel Tingkat Kesulitan -->
+    <div class="difficulty-panel">
+        <button class="diff-btn active" id="diff-3" onclick="setGridSize(3)">Normal (3x3)</button>
+        <button class="diff-btn" id="diff-4" onclick="setGridSize(4)">Sedang (4x4)</button>
+        <button class="diff-btn" id="diff-5" onclick="setGridSize(5)">Sulit (5x5)</button>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="control-panel">
+        <label class="btn" for="file-input">📷 Upload Gambar</label>
+        <input type="file" id="file-input" accept="image/*">
+        <button class="btn" id="peek-btn">👁️ Intip</button>
+        <button class="btn" onclick="initBoard()">🔄 Acak</button>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+        <div>Langkah: <span id="move-txt">0</span></div>
+    </div>
+
+    <!-- Canvas Game -->
+    <div id="game-container">
+        <canvas id="canvas" width="360" height="360"></canvas>
+        
+        <!-- Modal Intip -->
+        <div id="preview-modal">
+            <img id="preview-img" src="" alt="Preview">
+        </div>
+
+        <!-- Overlay Menang -->
+        <div id="overlay">
+            <h2>GAMBAR UTUH!</h2>
+            <p id="overlay-desc">Kamu berhasil menyusun gambar!</p>
+            <button class="btn" onclick="initBoard()">Main Lagi</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const moveTxt = document.getElementById('move-txt');
+        const fileInput = document.getElementById('file-input');
+        const peekBtn = document.getElementById('peek-btn');
+        const previewModal = document.getElementById('preview-modal');
+        const previewImg = document.getElementById('preview-img');
+        const overlay = document.getElementById('overlay');
+        const overlayDesc = document.getElementById('overlay-desc');
+
+        // Audio Synth
+        let audioCtx = null;
+        function playSound(freq, type = 'sine', duration = 0.1) {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        // Variabel Game
+        let gridSize = 3; // Grid awal
+        let moves = 0;
+        let board = [];
+        let emptyPos = { r: gridSize - 1, c: gridSize - 1 };
+        let isSolved = false;
+
+        // Gambar Default (Canvas Pattern)
+        let img = new Image();
+        function createDefaultImage() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 400;
+            tempCanvas.height = 400;
+            const tCtx = tempCanvas.getContext('2d');
+            let grad = tCtx.createLinearGradient(0, 0, 400, 400);
+            grad.addColorStop(0, '#ff007f'); grad.addColorStop(0.5, '#7928ca'); grad.addColorStop(1, '#00f2fe');
+            tCtx.fillStyle = grad; tCtx.fillRect(0, 0, 400, 400);
+            tCtx.fillStyle = '#ffffff'; tCtx.beginPath(); tCtx.arc(200, 200, 80, 0, Math.PI * 2); tCtx.fill();
+            tCtx.fillStyle = '#00f2fe'; tCtx.font = 'bold 36px sans-serif'; tCtx.textAlign = 'center'; tCtx.fillText('PUZZLE', 200, 212);
+            return tempCanvas.toDataURL();
+        }
+
+        img.src = createDefaultImage();
+        previewImg.src = img.src;
+        img.onload = () => initBoard();
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    img = new Image();
+                    img.src = event.target.result;
+                    previewImg.src = event.target.result;
+                    img.onload = () => initBoard();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Pengatur Grid Size (Difficulty) - FITUR BARU
+        function setGridSize(size) {
+            if (gridSize === size) return;
+            gridSize = size;
+            
+            // Update UI Active State
+            document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`diff-${size}`).classList.add('active');
+            
+            initBoard(); // Mulai ulang papan dengan ukuran baru
+        }
+
+        // Kodingan Asli Anda Tanpa Perubahan
+        function initBoard() {
+            moves = 0;
+            moveTxt.innerText = moves;
+            isSolved = false;
+            overlay.classList.remove('active');
+
+            let totalTiles = gridSize * gridSize;
+            let pieces = Array.from({ length: totalTiles - 1 }, (_, i) => i + 1);
+            pieces.push(0);
+
+            do {
+                pieces.sort(() => Math.random() - 0.5);
+            } while (!isSolvable(pieces, gridSize));
+
+            board = [];
+            for (let r = 0; r < gridSize; r++) {
+                let row = [];
+                for (let c = 0; c < gridSize; c++) {
+                    let val = pieces[r * gridSize + c];
+                    if (val === 0) emptyPos = { r, c };
+                    row.push(val);
+                }
+                board.push(row);
+            }
+            draw();
+        }
+
+        function isSolvable(arr, size) {
+            let inversions = 0;
+            for (let i = 0; i < arr.length - 1; i++) {
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[i] && arr[j] && arr[i] > arr[j]) inversions++;
+                }
+            }
+            if (size % 2 !== 0) {
+                return inversions % 2 === 0;
+            } else {
+                let emptyRowFromBottom = size - Math.floor(arr.indexOf(0) / size);
+                return (emptyRowFromBottom % 2 === 0) ? (inversions % 2 !== 0) : (inversions % 2 === 0);
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let pieceSize = canvas.width / gridSize;
+            let imgPieceWidth = img.width / gridSize;
+            let imgPieceHeight = img.height / gridSize;
+
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    let val = board[r][c];
+                    let x = c * pieceSize;
+                    let y = r * pieceSize;
+                    if (val !== 0) {
+                        let origR = Math.floor((val - 1) / gridSize);
+                        let origC = (val - 1) % gridSize;
+                        ctx.drawImage(img, origC * imgPieceWidth, origR * imgPieceHeight, imgPieceWidth, imgPieceHeight, x, y, pieceSize, pieceSize);
+                        ctx.strokeStyle = 'rgba(11, 15, 25, 0.6)'; ctx.lineWidth = 2; ctx.strokeRect(x, y, pieceSize, pieceSize);
+                    } else {
+                        ctx.fillStyle = '#0b0f19'; ctx.fillRect(x, y, pieceSize, pieceSize);
+                    }
+                }
+            }
+        }
+
+        function moveTile(r, c) {
+            if (isSolved) return;
+            let dr = Math.abs(r - emptyPos.r);
+            let dc = Math.abs(c - emptyPos.c);
+            if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+                board[emptyPos.r][emptyPos.c] = board[r][c];
+                board[r][c] = 0;
+                emptyPos = { r, c };
+                moves++; moveTxt.innerText = moves;
+                playSound(400, 'sine', 0.08); draw(); checkWin();
+            }
+        }
+
+        function checkWin() {
+            let count = 1; let win = true;
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    if (r === gridSize - 1 && c === gridSize - 1) {
+                        if (board[r][c] !== 0) win = false;
+                    } else {
+                        if (board[r][c] !== count) win = false;
+                        count++;
+                    }
+                }
+            }
+            if (win) {
+                isSolved = true; playSound(600, 'triangle', 0.3);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                setTimeout(() => { overlay.classList.add('active'); overlayDesc.innerText = `Selesai dalam ${moves} langkah!`; }, 300);
+            }
+        }
+
+        canvas.addEventListener('click', (e) => {
+            let rect = canvas.getBoundingClientRect();
+            let clickX = e.clientX - rect.left; let clickY = e.clientY - rect.top;
+            let pieceSize = canvas.width / gridSize;
+            let c = Math.floor(clickX / pieceSize); let r = Math.floor(clickY / pieceSize);
+            moveTile(r, c);
+        });
+
+        const showPreview = () => previewModal.classList.add('active');
+        const hidePreview = () => previewModal.classList.remove('active');
+        peekBtn.addEventListener('mousedown', showPreview); peekBtn.addEventListener('mouseup', hidePreview); peekBtn.addEventListener('mouseleave', hidePreview);
+        peekBtn.addEventListener('touchstart', (e) => { e.preventDefault(); showPreview(); }); peekBtn.addEventListener('touchend', hidePreview);
+    </script>
+</body>
+          </html>
+          
