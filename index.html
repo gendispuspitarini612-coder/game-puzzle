@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+   <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -24,40 +25,47 @@
             overflow: hidden;
         }
 
-        /* Header & Logo Game */
+        /* Header & 4 Logo JPG */
         .header {
             text-align: center;
             margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
         }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            text-shadow: 0 0 18px rgba(0, 242, 254, 0.4);
+
+        /* Container 4 Logo JPG */
+        .logo-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
         }
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            border: 2px solid #00f2fe;
+
+        .logo-img {
+            width: 36px;
+            height: 36px;
+            object-fit: cover;
             border-radius: 8px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2px;
-            padding: 3px;
-            box-shadow: 0 0 10px #00f2fe;
-            background: rgba(0, 242, 254, 0.1);
+            border: 2px solid #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            transition: transform 0.2s;
         }
-        .logo-box {
-            background: #00f2fe;
-            border-radius: 2px;
+
+        .logo-img:hover {
+            transform: scale(1.1);
+        }
+
+        .logo-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            background: linear-gradient(45deg, #00f2fe, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            text-shadow: 0 0 18px rgba(0, 242, 254, 0.3);
         }
 
         /* Panel Informasi Game */
@@ -204,19 +212,18 @@
 </head>
 <body>
 
-    <!-- Header & Logo Game -->
+    <!-- Header & 4 Logo Gambar JPG -->
     <div class="header">
-        <div class="logo">
-            <div class="logo-icon">
-                <div class="logo-box"></div>
-                <div class="logo-box"></div>
-                <div class="logo-box"></div>
-            </div>
-            NumPuzzle
+        <div class="logo-container">
+            <img src="file1.jpg" alt="Logo 1" class="logo-img">
+            <img src="file2.jpg" alt="Logo 2" class="logo-img">
+            <img src="file3.jpg" alt="Logo 3" class="logo-img">
+            <img src="file4.jpg" alt="Logo 4" class="logo-img">
         </div>
+        <div class="logo-title">NumPuzzle</div>
     </div>
 
-    <!-- Info Panel (Level, Skor, Langkah, Tombol Audio) -->
+    <!-- Info Panel -->
     <div class="info-panel">
         <div class="info-box">Level: <span id="level-txt">1</span></div>
         <div class="info-box">Skor: <span id="score-txt">0</span></div>
@@ -252,7 +259,6 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
-        // UI Elemen
         const levelTxt = document.getElementById('level-txt');
         const scoreTxt = document.getElementById('score-txt');
         const moveTxt = document.getElementById('move-txt');
@@ -261,7 +267,6 @@
         const overlayDesc = document.getElementById('overlay-desc');
         const audioBtn = document.getElementById('audio-btn');
 
-        // Audio System (Web Audio API Synthesizer)
         let audioCtx = null;
         let isAudioMuted = false;
         let bgmInterval = null;
@@ -290,7 +295,7 @@
         }
 
         function startBGM() {
-            const notes = [261.63, 329.63, 392.00, 523.25]; // Melodi Pentatonik Arpeggio
+            const notes = [261.63, 329.63, 392.00, 523.25];
             let step = 0;
             bgmInterval = setInterval(() => {
                 if (!isAudioMuted && audioCtx) {
@@ -306,17 +311,16 @@
             audioBtn.innerText = isAudioMuted ? "🔇 Musik: OFF" : "🔊 Musik: ON";
         }
 
-        // Variable Game State
         let level = 1;
         let score = 0;
         let moves = 0;
-        let gridSize = 3; // Level 1 (3x3), Level tinggi bertambah
+        let gridSize = 3;
         let board = [];
         let emptyPos = { r: 0, c: 0 };
         let isSolved = false;
 
         function initBoard() {
-            gridSize = level >= 3 ? 4 : 3; // Ukuran papan membesar di Level 3
+            gridSize = level >= 3 ? 4 : 3;
             moves = 0;
             moveTxt.innerText = moves;
             isSolved = false;
@@ -324,14 +328,12 @@
 
             let totalTiles = gridSize * gridSize;
             let numbers = Array.from({ length: totalTiles - 1 }, (_, i) => i + 1);
-            numbers.push(0); // 0 melambangkan ubin kosong
+            numbers.push(0);
 
-            // Pengacakan Ubin yang Dijamin Mampu Diselesaikan (Solvable)
             do {
                 numbers.sort(() => Math.random() - 0.5);
             } while (!isSolvable(numbers, gridSize));
 
-            // Masukkan ke Matrix
             board = [];
             for (let r = 0; r < gridSize; r++) {
                 let row = [];
@@ -339,7 +341,6 @@
                     let val = numbers[r * gridSize + c];
                     let isLocked = false;
 
-                    // Rintangan: Di level > 1, ada ubin merah yang tidak bisa dipindahkan awal-awal
                     if (level > 1 && val === 1) {
                         isLocked = true;
                     }
@@ -354,7 +355,6 @@
             }
         }
 
-        // Memastikan Puzzle Dapat Diselesaikan (Solvable Check Algorithm)
         function isSolvable(arr, size) {
             let inversions = 0;
             for (let i = 0; i < arr.length - 1; i++) {
@@ -375,17 +375,15 @@
         function moveTile(r, c) {
             if (isSolved) return;
 
-            // Cek apakah ubin bersebelahan dengan ubin kosong
             let dr = Math.abs(r - emptyPos.r);
             let dc = Math.abs(c - emptyPos.c);
 
             if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
                 if (board[r][c].isLocked) {
-                    playSound(150, 'sawtooth', 0.2); // Efek Suara Terkunci
+                    playSound(150, 'sawtooth', 0.2);
                     return;
                 }
 
-                // Tukar Ubin
                 board[emptyPos.r][emptyPos.c].val = board[r][c].val;
                 board[emptyPos.r][emptyPos.c].isLocked = board[r][c].isLocked;
 
@@ -444,7 +442,6 @@
             initBoard();
         }
 
-        // Render Grafik Canvas
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -458,28 +455,24 @@
                     let y = padding + r * (tileSize + padding);
 
                     if (tile.val !== 0) {
-                        // Background Ubin
                         if (tile.isLocked) {
-                            ctx.fillStyle = '#ff0055'; // Merah Rintangan
+                            ctx.fillStyle = '#ff0055';
                             ctx.shadowColor = '#ff0055';
                         } else {
-                            ctx.fillStyle = '#1e293b'; // Cyan Cyber
+                            ctx.fillStyle = '#1e293b';
                             ctx.shadowColor = '#00f2fe';
                         }
                         ctx.shadowBlur = 8;
 
-                        // Menggambar Ubin Bulat (Rounded Rect)
                         ctx.beginPath();
                         ctx.roundRect(x, y, tileSize, tileSize, 12);
                         ctx.fill();
                         ctx.shadowBlur = 0;
 
-                        // Border Ubin
                         ctx.strokeStyle = tile.isLocked ? '#ff3366' : '#00f2fe';
                         ctx.lineWidth = 2;
                         ctx.stroke();
 
-                        // Teks Angka
                         ctx.fillStyle = '#ffffff';
                         ctx.font = `bold ${tileSize * 0.4}px Segoe UI`;
                         ctx.textAlign = 'center';
@@ -490,7 +483,6 @@
             }
         }
 
-        // Input Klik / Touch Canvas
         canvas.addEventListener('click', (e) => {
             initAudio();
             let rect = canvas.getBoundingClientRect();
@@ -512,7 +504,6 @@
             }
         });
 
-        // Kontrol Keyboard (Desktop)
         window.addEventListener('keydown', (e) => {
             initAudio();
             switch (e.key) {
@@ -523,7 +514,6 @@
             }
         });
 
-        // Virtual Joystick Analog 360° (Mobile)
         const joystick = document.getElementById('joystick-container');
         const knob = document.getElementById('joystick-knob');
         let joyActive = false;
@@ -563,17 +553,14 @@
             knob.style.transform = `translate(-50%, -50%)`;
         });
 
-        // Game Loop Utama
         function gameLoop() {
             draw();
             requestAnimationFrame(gameLoop);
         }
 
-        // Inisialisasi Pertama
         initBoard();
         gameLoop();
     </script>
 </body>
-    </html>
-
-                                        
+</html>
+     
